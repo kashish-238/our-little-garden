@@ -17,12 +17,6 @@ function FallingPetal({ className }: { className: string }) {
   );
 }
 
-function PixelCloud({ x, y, w }: { x: number; y: number; w: number }) {
-  return (
-    <rect x={x} y={y} width={w} height={Math.round(w * 0.38)} rx="6"
-      fill="white" fillOpacity="0.82" />
-  );
-}
 
 function SceneSVG() {
   return (
@@ -38,16 +32,22 @@ function SceneSVG() {
         <rect key={i} x="356" y="14" width="8" height="16" rx="3" fill="#ffe87a" opacity="0.6"
           transform={`rotate(${a} 360 50)`} />
       ))}
-      {/* Cloud 1 */}
-      <ellipse cx="75"  cy="38" rx="28" ry="17" fill="white" fillOpacity="0.88" />
-      <ellipse cx="52"  cy="46" rx="18" ry="13" fill="white" fillOpacity="0.88" />
-      <ellipse cx="100" cy="44" rx="20" ry="14" fill="white" fillOpacity="0.88" />
-      <ellipse cx="75"  cy="50" rx="32" ry="12" fill="white" fillOpacity="0.88" />
-      {/* Cloud 2 */}
-      <ellipse cx="230" cy="32" rx="32" ry="19" fill="white" fillOpacity="0.78" />
-      <ellipse cx="204" cy="41" rx="20" ry="14" fill="white" fillOpacity="0.78" />
-      <ellipse cx="258" cy="39" rx="22" ry="15" fill="white" fillOpacity="0.78" />
-      <ellipse cx="230" cy="46" rx="38" ry="13" fill="white" fillOpacity="0.78" />
+      {/* Cloud 1 — group opacity so bumps merge solid */}
+      <g opacity="0.92">
+        <circle cx="52"  cy="46" r="14" fill="white" />
+        <circle cx="74"  cy="36" r="20" fill="white" />
+        <circle cx="98"  cy="42" r="16" fill="white" />
+        <circle cx="116" cy="48" r="11" fill="white" />
+        <rect   x="38"   y="46" width="89" height="18" fill="white" />
+      </g>
+      {/* Cloud 2 — group opacity */}
+      <g opacity="0.80">
+        <circle cx="198" cy="42" r="13" fill="white" />
+        <circle cx="220" cy="30" r="20" fill="white" />
+        <circle cx="246" cy="37" r="16" fill="white" />
+        <circle cx="264" cy="44" r="11" fill="white" />
+        <rect   x="185"  y="42" width="90" height="18" fill="white" />
+      </g>
 
       {/* Back hills */}
       <ellipse cx="90" cy="200" rx="140" ry="80" fill="#8ec48a" />

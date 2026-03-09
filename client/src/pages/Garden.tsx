@@ -35,23 +35,31 @@ function PixelGardenBg({ health }: { health: number }) {
           <div key={i} className="absolute top-0 bottom-0 w-1.5 rounded-sm" style={{ left: `${i * 3.2}%`, background: '#9b7248' }} />
         ))}
       </div>
-      {/* Clouds */}
+      {/* Clouds — group opacity so overlaps merge into solid shapes */}
       <svg className="absolute top-0 left-0 w-full h-[30%] pointer-events-none" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        {/* Cloud 1 - left */}
-        <ellipse cx="110" cy="72" rx="38" ry="24" fill="white" opacity="0.92" />
-        <ellipse cx="84"  cy="82" rx="24" ry="18" fill="white" opacity="0.92" />
-        <ellipse cx="142" cy="80" rx="28" ry="20" fill="white" opacity="0.92" />
-        <ellipse cx="110" cy="88" rx="44" ry="16" fill="white" opacity="0.92" />
-        {/* Cloud 2 - center-right */}
-        <ellipse cx="540" cy="50" rx="44" ry="28" fill="white" opacity="0.82" />
-        <ellipse cx="508" cy="62" rx="28" ry="20" fill="white" opacity="0.82" />
-        <ellipse cx="578" cy="60" rx="32" ry="22" fill="white" opacity="0.82" />
-        <ellipse cx="540" cy="68" rx="50" ry="18" fill="white" opacity="0.82" />
-        {/* Cloud 3 - small top-right */}
-        <ellipse cx="710" cy="32" rx="28" ry="18" fill="white" opacity="0.65" />
-        <ellipse cx="690" cy="40" rx="18" ry="14" fill="white" opacity="0.65" />
-        <ellipse cx="730" cy="38" rx="22" ry="15" fill="white" opacity="0.65" />
-        <ellipse cx="710" cy="46" rx="32" ry="12" fill="white" opacity="0.65" />
+        {/* Cloud 1 - left, large */}
+        <g opacity="0.93">
+          <circle cx="88"  cy="90" r="22" fill="white" />
+          <circle cx="118" cy="74" r="32" fill="white" />
+          <circle cx="152" cy="82" r="26" fill="white" />
+          <circle cx="180" cy="90" r="18" fill="white" />
+          <rect   x="66"   y="90" width="132" height="28" fill="white" />
+        </g>
+        {/* Cloud 2 - center-right, large */}
+        <g opacity="0.88">
+          <circle cx="490" cy="68" r="20" fill="white" />
+          <circle cx="520" cy="52" r="34" fill="white" />
+          <circle cx="558" cy="60" r="28" fill="white" />
+          <circle cx="590" cy="68" r="20" fill="white" />
+          <rect   x="470"  y="68" width="140" height="30" fill="white" />
+        </g>
+        {/* Cloud 3 - right, small */}
+        <g opacity="0.68">
+          <circle cx="690" cy="42" r="16" fill="white" />
+          <circle cx="714" cy="30" r="22" fill="white" />
+          <circle cx="740" cy="38" r="18" fill="white" />
+          <rect   x="674"  y="42" width="84" height="20" fill="white" />
+        </g>
       </svg>
     </div>
   );
