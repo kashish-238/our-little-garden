@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { motion } from "framer-motion";
-import { useCreateGarden } from "@/hooks/use-garden";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCreateGarden, useLoginToGarden } from "@/hooks/use-garden";
 import { Loader2 } from "lucide-react";
 
 function FallingPetal({ className }: { className: string }) {
@@ -120,7 +120,14 @@ export function Landing() {
   const [isJoining, setIsJoining] = useState(false);
   const [gardenCreated, setGardenCreated] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  const [showLogin, setShowLogin] = useState(false);
+  const [loginCode, setLoginCode] = useState("");
+  const [loginName, setLoginName] = useState("");
+  const [loginError, setLoginError] = useState("");
+
   const createGarden = useCreateGarden();
+  const loginToGarden = useLoginToGarden();
 
   // Auto-redirect if a session already exists
   useEffect(() => {
@@ -145,6 +152,25 @@ export function Landing() {
     if (joinCode.length === 6) {
       setIsJoining(true);
       setTimeout(() => setLocation(`/join/${joinCode.toUpperCase()}`), 400);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+    if (loginCode.length !== 6 || !loginName.trim()) return;
+    try {
+      const user = await loginToGarden.mutateAsync({ code: loginCode.toUpperCase(), name: loginName.trim() });
+      localStorage.setItem("garden_session", JSON.stringify({ gardenCode: loginCode.toUpperCase(), userId: user.id }));
+      setLocation(`/garden/${loginCode.toUpperCase()}`);
+    } catch (err: any) {
+      if (err.message === "Garden not found") {
+        setLoginError("That garden code doesn't exist.");
+      } else if (err.message === "User not found") {
+        setLoginError("No profile with that name in this garden.");
+      } else {
+        setLoginError("Something went wrong, try again.");
+      }
     }
   };
 
@@ -243,6 +269,66 @@ export function Landing() {
                   {isJoining ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join"}
                 </button>
               </form>
+
+              {/* Login divider */}
+              <div className="flex items-center w-full gap-3">
+                <div className="flex-1 h-px bg-[#e8d0d8]" />
+                <button
+                  onClick={() => { setShowLogin(v => !v); setLoginError(""); }}
+                  data-testid="button-toggle-login"
+                  className="font-display text-xs text-[#c09aaa] hover:text-[#e07a8f] transition-colors cursor-pointer"
+                >
+                  {showLogin ? "hide ↑" : "already here? log back in"}
+                </button>
+                <div className="flex-1 h-px bg-[#e8d0d8]" />
+              </div>
+
+              {/* Login form */}
+              <AnimatePresence>
+                {showLogin && (
+                  <motion.form
+                    key="login-form"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    onSubmit={handleLogin}
+                    className="w-full flex flex-col gap-2 overflow-hidden"
+                    data-testid="form-login"
+                  >
+                    <input
+                      type="text"
+                      value={loginCode}
+                      onChange={e => { setLoginCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6)); setLoginError(""); }}
+                      placeholder="GARDEN CODE"
+                      data-testid="input-login-code"
+                      className="w-full px-3 py-2 font-pixel text-base tracking-widest text-[#7a2e43] bg-[#fdf0f3] border-2 border-[#e8aabf] focus:outline-none focus:border-[#e07a8f] text-center uppercase placeholder:text-[#c0a0b0] placeholder:text-xs placeholder:tracking-normal placeholder:font-display"
+                      style={{ borderRadius: '4px' }}
+                    />
+                    <input
+                      type="text"
+                      value={loginName}
+                      onChange={e => { setLoginName(e.target.value.slice(0, 20)); setLoginError(""); }}
+                      placeholder="your name"
+                      data-testid="input-login-name"
+                      className="w-full px-3 py-2 font-sans text-sm text-[#7a2e43] bg-[#fdf0f3] border-2 border-[#e8aabf] focus:outline-none focus:border-[#e07a8f] text-center placeholder:text-[#c0a0b0]"
+                      style={{ borderRadius: '4px' }}
+                    />
+                    {loginError && (
+                      <p data-testid="text-login-error" className="font-display text-xs text-[#e07a8f] text-center">{loginError}</p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={loginCode.length !== 6 || !loginName.trim() || loginToGarden.isPending}
+                      data-testid="button-login-submit"
+                      className="pixel-btn w-full py-2 bg-[#d9d0ef] text-[#4a3878] font-display text-sm disabled:opacity-50"
+                      style={{ borderRadius: '4px' }}
+                    >
+                      {loginToGarden.isPending ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : "Return to Garden"}
+                    </button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </>
           ) : (
             <motion.div

@@ -92,6 +92,27 @@ export async function registerRoutes(
     }
   });
 
+  // User login (find existing user by name)
+  app.post(api.gardens.loginUser.path, async (req, res) => {
+    try {
+      const code = req.params.code;
+      const input = api.gardens.loginUser.input.parse(req.body);
+
+      const garden = await storage.getGarden(code);
+      if (!garden) return res.status(404).json({ message: 'Garden not found' });
+
+      const user = await storage.findUserByNameInGarden(code, input.name);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+
+      res.json(user);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message });
+      }
+      throw err;
+    }
+  });
+
   // Flowers
   app.post(api.gardens.createFlower.path, async (req, res) => {
     try {

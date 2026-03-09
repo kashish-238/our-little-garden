@@ -75,6 +75,15 @@ export const api = {
         400: errorSchemas.validation,
       },
     },
+    loginUser: {
+      method: 'POST' as const,
+      path: '/api/gardens/:code/users/login' as const,
+      input: z.object({ name: z.string().min(1) }),
+      responses: {
+        200: z.custom<typeof users.$inferSelect>(),
+        404: errorSchemas.notFound,
+      },
+    },
     createFlower: {
       method: 'POST' as const,
       path: '/api/gardens/:code/flowers' as const,

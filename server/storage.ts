@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, ilike } from "drizzle-orm";
 import {
   gardens,
   users,
@@ -28,6 +28,7 @@ export interface IStorage {
   // Users
   getUser(id: number): Promise<User | undefined>;
   getUsersInGarden(gardenCode: string): Promise<User[]>;
+  findUserByNameInGarden(gardenCode: string, name: string): Promise<User | undefined>;
   createUser(user: CreateUserRequest): Promise<User>;
 
   // Flowers
@@ -90,6 +91,12 @@ export class DatabaseStorage implements IStorage {
 
   async getUsersInGarden(gardenCode: string): Promise<User[]> {
     return await db.select().from(users).where(eq(users.gardenCode, gardenCode));
+  }
+
+  async findUserByNameInGarden(gardenCode: string, name: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users)
+      .where(and(eq(users.gardenCode, gardenCode), ilike(users.name, name)));
+    return user;
   }
 
   async createUser(user: CreateUserRequest): Promise<User> {

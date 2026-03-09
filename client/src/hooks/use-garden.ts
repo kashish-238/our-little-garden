@@ -76,6 +76,25 @@ export function useCreateUser() {
   });
 }
 
+export function useLoginToGarden() {
+  return useMutation({
+    mutationFn: async ({ code, name }: { code: string; name: string }) => {
+      const url = buildUrl(api.gardens.loginUser.path, { code });
+      const res = await fetch(url, {
+        method: api.gardens.loginUser.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      if (res.status === 404) {
+        const body = await res.json();
+        throw new Error(body.message || "Not found");
+      }
+      if (!res.ok) throw new Error("Login failed");
+      return api.gardens.loginUser.responses[200].parse(await res.json());
+    },
+  });
+}
+
 // --- FLOWER HOOKS ---
 
 export function useCreateFlower() {

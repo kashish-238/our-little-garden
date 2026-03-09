@@ -5,7 +5,7 @@ import { DrawingStudio } from "@/components/DrawingStudio";
 import { DraggableFlower } from "@/components/DraggableFlower";
 import { Mailbox } from "@/components/Mailbox";
 import { Avatar } from "@/components/Avatar";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 
 function PixelGardenBg({ health }: { health: number }) {
@@ -212,6 +212,18 @@ export function Garden() {
 
         {/* Code */}
         <span className="font-pixel text-xs text-[#c09aaa] tracking-widest hidden sm:block">{code}</span>
+
+        {/* Logout */}
+        <button
+          data-testid="button-logout"
+          onClick={() => { localStorage.removeItem("garden_session"); setLocation("/"); }}
+          title="Log out"
+          className="flex items-center gap-1 px-2.5 py-1.5 font-display text-xs text-[#c09aaa] hover:text-[#e07a8f] hover:bg-[#fde8ed] transition-colors"
+          style={{ borderRadius: '4px', border: '2px solid #e8d0d8' }}
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">log out</span>
+        </button>
       </div>
 
       {/* LEFT: Drawing Studio */}
