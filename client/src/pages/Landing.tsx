@@ -38,13 +38,16 @@ function SceneSVG() {
         <rect key={i} x="356" y="14" width="8" height="16" rx="3" fill="#ffe87a" opacity="0.6"
           transform={`rotate(${a} 360 50)`} />
       ))}
-      {/* Clouds */}
-      <PixelCloud x={30} y={28} w={80} />
-      <PixelCloud x={50} y={22} w={50} />
-      <PixelCloud x={60} y={32} w={60} />
-
-      <PixelCloud x={190} y={42} w={70} />
-      <PixelCloud x={208} y={36} w={44} />
+      {/* Cloud 1 */}
+      <ellipse cx="75"  cy="38" rx="28" ry="17" fill="white" fillOpacity="0.88" />
+      <ellipse cx="52"  cy="46" rx="18" ry="13" fill="white" fillOpacity="0.88" />
+      <ellipse cx="100" cy="44" rx="20" ry="14" fill="white" fillOpacity="0.88" />
+      <ellipse cx="75"  cy="50" rx="32" ry="12" fill="white" fillOpacity="0.88" />
+      {/* Cloud 2 */}
+      <ellipse cx="230" cy="32" rx="32" ry="19" fill="white" fillOpacity="0.78" />
+      <ellipse cx="204" cy="41" rx="20" ry="14" fill="white" fillOpacity="0.78" />
+      <ellipse cx="258" cy="39" rx="22" ry="15" fill="white" fillOpacity="0.78" />
+      <ellipse cx="230" cy="46" rx="38" ry="13" fill="white" fillOpacity="0.78" />
 
       {/* Back hills */}
       <ellipse cx="90" cy="200" rx="140" ry="80" fill="#8ec48a" />

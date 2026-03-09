@@ -29,8 +29,7 @@ export function DrawingStudio({ onSave, isSaving }: DrawingStudioProps) {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "#fdfaf7";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
   }, []);
@@ -96,8 +95,7 @@ export function DrawingStudio({ onSave, isSaving }: DrawingStudioProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = "#fdfaf7";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     setHistory([]);
   }, []);
 
@@ -123,7 +121,11 @@ export function DrawingStudio({ onSave, isSaving }: DrawingStudioProps) {
   return (
     <div className="flex flex-col gap-3">
       {/* Canvas */}
-      <div style={{ border: '3px solid #e8d0d8', boxShadow: '3px 3px 0 #e8d0d8', borderRadius: '4px', overflow: 'hidden', background: '#fdfaf7' }}>
+      <div style={{
+        border: '3px solid #e8d0d8', boxShadow: '3px 3px 0 #e8d0d8', borderRadius: '4px', overflow: 'hidden',
+        backgroundImage: 'repeating-conic-gradient(#e8d8dc 0% 25%, #fdf8fa 0% 50%)',
+        backgroundSize: '16px 16px',
+      }}>
         <canvas
           ref={canvasRef}
           width={280}

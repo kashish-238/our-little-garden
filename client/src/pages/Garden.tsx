@@ -36,16 +36,23 @@ function PixelGardenBg({ health }: { health: number }) {
         ))}
       </div>
       {/* Clouds */}
-      <div className="absolute top-[4%] left-[8%] flex gap-0 items-end opacity-80">
-        <div className="w-10 h-6 rounded-full" style={{ background: 'white' }} />
-        <div className="w-16 h-9 rounded-full -ml-5" style={{ background: 'white' }} />
-        <div className="w-8 h-5 rounded-full -ml-4" style={{ background: 'white' }} />
-      </div>
-      <div className="absolute top-[8%] left-[52%] flex gap-0 items-end opacity-70">
-        <div className="w-8 h-5 rounded-full" style={{ background: 'white' }} />
-        <div className="w-14 h-8 rounded-full -ml-4" style={{ background: 'white' }} />
-        <div className="w-7 h-4 rounded-full -ml-3" style={{ background: 'white' }} />
-      </div>
+      <svg className="absolute top-0 left-0 w-full h-[30%] pointer-events-none" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        {/* Cloud 1 - left */}
+        <ellipse cx="110" cy="72" rx="38" ry="24" fill="white" opacity="0.92" />
+        <ellipse cx="84"  cy="82" rx="24" ry="18" fill="white" opacity="0.92" />
+        <ellipse cx="142" cy="80" rx="28" ry="20" fill="white" opacity="0.92" />
+        <ellipse cx="110" cy="88" rx="44" ry="16" fill="white" opacity="0.92" />
+        {/* Cloud 2 - center-right */}
+        <ellipse cx="540" cy="50" rx="44" ry="28" fill="white" opacity="0.82" />
+        <ellipse cx="508" cy="62" rx="28" ry="20" fill="white" opacity="0.82" />
+        <ellipse cx="578" cy="60" rx="32" ry="22" fill="white" opacity="0.82" />
+        <ellipse cx="540" cy="68" rx="50" ry="18" fill="white" opacity="0.82" />
+        {/* Cloud 3 - small top-right */}
+        <ellipse cx="710" cy="32" rx="28" ry="18" fill="white" opacity="0.65" />
+        <ellipse cx="690" cy="40" rx="18" ry="14" fill="white" opacity="0.65" />
+        <ellipse cx="730" cy="38" rx="22" ry="15" fill="white" opacity="0.65" />
+        <ellipse cx="710" cy="46" rx="32" ry="12" fill="white" opacity="0.65" />
+      </svg>
     </div>
   );
 }
