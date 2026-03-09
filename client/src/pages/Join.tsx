@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRoute, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useCreateUser } from "@/hooks/use-garden";
@@ -30,6 +30,14 @@ export function Join() {
   const [color, setColor]     = useState("blush");
 
   if (!code) { setLocation("/"); return null; }
+
+  // If already have a session for this garden, skip straight to it
+  useEffect(() => {
+    try {
+      const session = JSON.parse(localStorage.getItem("garden_session") || "null");
+      if (session?.gardenCode === code) setLocation(`/garden/${code}`);
+    } catch {}
+  }, [code]);
 
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();

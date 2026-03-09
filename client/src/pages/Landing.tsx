@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { useCreateGarden } from "@/hooks/use-garden";
@@ -121,6 +121,14 @@ export function Landing() {
   const [gardenCreated, setGardenCreated] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const createGarden = useCreateGarden();
+
+  // Auto-redirect if a session already exists
+  useEffect(() => {
+    try {
+      const session = JSON.parse(localStorage.getItem("garden_session") || "null");
+      if (session?.gardenCode) setLocation(`/garden/${session.gardenCode}`);
+    } catch {}
+  }, []);
 
   const handleCreate = async () => {
     const code = Math.random().toString(36).substring(2, 8).toUpperCase();
