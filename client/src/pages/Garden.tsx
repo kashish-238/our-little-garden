@@ -5,36 +5,66 @@ import { DrawingStudio } from "@/components/DrawingStudio";
 import { DraggableFlower } from "@/components/DraggableFlower";
 import { Mailbox } from "@/components/Mailbox";
 import { Avatar } from "@/components/Avatar";
-import { Loader2, Users, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
+
+function PixelGardenBg({ health }: { health: number }) {
+  const sat = Math.max(30, health);
+  const brightness = Math.max(78, health);
+  return (
+    <div className="absolute inset-0" style={{ filter: `saturate(${sat}%) brightness(${brightness}%)`, transition: 'filter 2s ease-in-out' }}>
+      {/* Sky strip */}
+      <div className="absolute inset-x-0 top-0 h-[30%]" style={{ background: 'linear-gradient(180deg, #c8e8f8 0%, #d8eecc 100%)' }} />
+      {/* Grass */}
+      <div className="absolute inset-x-0 bottom-0 top-[30%]" style={{ background: '#6daa62' }}>
+        {/* Pixel grid */}
+        <div className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 15px, rgba(0,0,0,0.15) 15px, rgba(0,0,0,0.15) 16px), repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.15) 15px, rgba(0,0,0,0.15) 16px)'
+          }} />
+        {/* Darker ground patches */}
+        {[10,28,52,74,88].map(l => (
+          <div key={l} className="absolute h-4 rounded-full opacity-15"
+            style={{ left: `${l}%`, bottom: `${(l % 3) * 10 + 5}%`, width: `${(l % 4 + 2) * 4}%`, background: '#3d7a38' }} />
+        ))}
+      </div>
+      {/* Fence strip */}
+      <div className="absolute left-0 right-0" style={{ top: '28%', height: '24px' }}>
+        <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded" style={{ background: '#b8905e' }} />
+        {Array.from({ length: 32 }).map((_, i) => (
+          <div key={i} className="absolute top-0 bottom-0 w-1.5 rounded-sm" style={{ left: `${i * 3.2}%`, background: '#9b7248' }} />
+        ))}
+      </div>
+      {/* Clouds */}
+      <div className="absolute top-[4%] left-[8%] flex gap-0 items-end opacity-80">
+        <div className="w-10 h-6 rounded-full" style={{ background: 'white' }} />
+        <div className="w-16 h-9 rounded-full -ml-5" style={{ background: 'white' }} />
+        <div className="w-8 h-5 rounded-full -ml-4" style={{ background: 'white' }} />
+      </div>
+      <div className="absolute top-[8%] left-[52%] flex gap-0 items-end opacity-70">
+        <div className="w-8 h-5 rounded-full" style={{ background: 'white' }} />
+        <div className="w-14 h-8 rounded-full -ml-4" style={{ background: 'white' }} />
+        <div className="w-7 h-4 rounded-full -ml-3" style={{ background: 'white' }} />
+      </div>
+    </div>
+  );
+}
 
 export function Garden() {
   const [, params] = useRoute("/garden/:code");
   const code = params?.code;
   const [, setLocation] = useLocation();
   const gardenRef = useRef<HTMLDivElement>(null);
-  
   const [currentUser, setCurrentUser] = useState<any>(null);
 
-  // Fetch session
   useEffect(() => {
     const sessionStr = localStorage.getItem("garden_session");
-    if (!sessionStr) {
-      if (code) setLocation(`/join/${code}`);
-      else setLocation("/");
-      return;
-    }
-    
+    if (!sessionStr) { if (code) setLocation(`/join/${code}`); else setLocation("/"); return; }
     try {
       const session = JSON.parse(sessionStr);
-      if (session.gardenCode !== code) {
-        setLocation(`/join/${code}`);
-        return;
-      }
+      if (session.gardenCode !== code) { setLocation(`/join/${code}`); return; }
       setCurrentUser({ id: session.userId });
-    } catch {
-      setLocation("/");
-    }
+    } catch { setLocation("/"); }
   }, [code, setLocation]);
 
   const { data: state, isLoading, error } = useGardenState(code || null);
@@ -44,19 +74,29 @@ export function Garden() {
 
   if (isLoading || !currentUser) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-background">
-        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      <div className="h-screen w-full flex flex-col items-center justify-center gap-4"
+        style={{ background: 'linear-gradient(180deg, #c8e8f8 0%, #c4ddc0 60%, #6daa62 100%)' }}>
+        <motion.div animate={{ y: [0,-8,0] }} transition={{ duration: 1.2, repeat: Infinity }}>
+          <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" style={{ imageRendering: 'pixelated' }}>
+            <rect x="26" y="16" width="4" height="24" fill="#6daa62" />
+            <ellipse cx="28" cy="18" rx="8" ry="8" fill="#f9bcd8" />
+            <circle cx="28" cy="21" r="3.5" fill="#ffd44a" />
+          </svg>
+        </motion.div>
+        <p className="font-display text-[#7a2e43] text-sm">growing your garden...</p>
       </div>
     );
   }
 
   if (error || !state) {
     return (
-      <div className="h-screen w-full flex flex-col items-center justify-center bg-background text-center p-4">
-        <AlertCircle className="w-16 h-16 text-destructive mb-4" />
-        <h2 className="text-2xl font-bold mb-2">Garden Not Found</h2>
-        <p className="text-muted-foreground mb-6">This garden might not exist or the link is broken.</p>
-        <button onClick={() => setLocation("/")} className="px-6 py-3 bg-primary text-white rounded-full font-bold hover:bg-primary/90">
+      <div className="h-screen w-full flex flex-col items-center justify-center gap-4 bg-background p-4 text-center">
+        <AlertCircle className="w-12 h-12 text-destructive" />
+        <h2 className="font-display text-xl text-foreground">Garden not found</h2>
+        <p className="text-sm text-muted-foreground">This garden might not exist.</p>
+        <button onClick={() => setLocation("/")}
+          className="pixel-btn px-6 py-2.5 bg-[#e07a8f] text-white font-display text-sm mt-2"
+          style={{ borderRadius: '4px' }}>
           Go Home
         </button>
       </div>
@@ -64,137 +104,168 @@ export function Garden() {
   }
 
   const myUser = state.users.find(u => u.id === currentUser.id);
-  
-  // If somehow user is in session but not in DB anymore (deleted garden)
   if (!myUser && !isLoading) {
     localStorage.removeItem("garden_session");
     setLocation(`/join/${code}`);
     return null;
   }
+  if (!myUser) return null;
 
   const handleSaveFlower = async (base64: string) => {
-    if (!code || !myUser) return;
+    if (!code) return;
     await createFlower.mutateAsync({
       code,
       data: {
         drawnBy: myUser.id,
         imageUrl: base64,
-        inGarden: false, // Starts in library
-        scale: (Math.random() * 0.4 + 0.8).toFixed(2), // 0.8x to 1.2x
-        rotation: Math.floor(Math.random() * 30 - 15) // -15 to +15 deg
-      }
+        inGarden: false,
+        scale: (Math.random() * 0.4 + 0.8).toFixed(2),
+        rotation: Math.floor(Math.random() * 30 - 15),
+      },
     });
   };
 
   const handleDropFlower = async (flowerId: number, x: number, y: number) => {
     if (!code) return;
-    await updateFlower.mutateAsync({
-      code,
-      id: flowerId,
-      data: { inGarden: true, x, y }
-    });
+    await updateFlower.mutateAsync({ code, id: flowerId, data: { inGarden: true, x, y } });
   };
 
   const handleSendLetter = async (toUserId: number | null, body: string) => {
-    if (!code || !myUser) return;
+    if (!code) return;
     await createLetter.mutateAsync({
       code,
       data: {
         fromUserId: myUser.id,
         toUserId,
         body,
-        emoji: ['💌', '🌻', '✨', '💖', '🌿'][Math.floor(Math.random() * 5)]
-      }
+        emoji: ['>', '<', '+', '*', '^'][Math.floor(Math.random() * 5)],
+      },
     });
   };
 
   const libraryFlowers = state.flowers.filter(f => !f.inGarden && f.drawnBy === myUser.id);
-  const gardenFlowers = state.flowers.filter(f => f.inGarden);
-  
-  // Calculate garden health desaturation
-  const healthFilter = `saturate(${Math.max(30, state.garden.healthScore)}%) brightness(${Math.max(80, state.garden.healthScore)}%)`;
+  const gardenFlowers  = state.flowers.filter(f => f.inGarden);
 
   return (
-    <div className="h-screen w-full bg-background flex flex-col md:flex-row overflow-hidden font-sans relative">
-      {/* Top Bar (Mobile) / Absolute Header */}
-      <div className="absolute top-4 left-4 z-40 glass-panel rounded-full px-4 py-2 flex items-center gap-3">
-        <h1 className="font-display text-xl text-primary">{state.garden.name}</h1>
-        <div className="w-1 h-4 bg-border rounded" />
-        <div className="flex -space-x-2">
-          {state.users.map(u => (
-            <Avatar 
-              key={u.id} 
-              id={u.avatarId} 
-              color={u.color} 
-              size="sm" 
-              className={`w-8 h-8 ${u.id === myUser.id ? 'ring-2 ring-primary z-10' : ''}`} 
+    <div className="h-screen w-full flex flex-col md:flex-row overflow-hidden relative" style={{ fontFamily: 'var(--font-sans)' }}>
+
+      {/* Top bar */}
+      <div className="absolute top-0 left-0 right-0 z-40 flex items-center gap-3 px-4 py-2 md:py-3"
+        style={{ background: 'rgba(253,248,244,0.92)', borderBottom: '3px solid #e8d0d8' }}>
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <svg width="22" height="22" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" style={{ imageRendering: 'pixelated', flexShrink: 0 }}>
+            <rect x="26" y="16" width="4" height="28" fill="#6daa62" />
+            <ellipse cx="28" cy="16" rx="9" ry="9" fill="#f9bcd8" />
+            <circle cx="28" cy="19" r="4" fill="#ffd44a" />
+          </svg>
+          <span className="font-display text-[#7a2e43] text-base truncate">{state.garden.name}</span>
+        </div>
+
+        {/* Health bar */}
+        <div className="hidden md:flex items-center gap-1.5">
+          <span className="font-display text-[10px] text-[#c09aaa]">health</span>
+          <div className="w-20 h-2.5 border-2 border-[#e8d0d8] bg-[#fde8ed] overflow-hidden" style={{ borderRadius: '2px' }}>
+            <motion.div
+              className="h-full"
+              style={{ background: state.garden.healthScore > 60 ? '#8ec48a' : state.garden.healthScore > 30 ? '#f0d060' : '#e07a8f' }}
+              animate={{ width: `${state.garden.healthScore}%` }}
+              transition={{ duration: 1 }}
             />
+          </div>
+        </div>
+
+        {/* Users */}
+        <div className="flex items-center -space-x-2">
+          {state.users.map(u => (
+            <div key={u.id} className="relative"
+              style={{ zIndex: u.id === myUser.id ? 10 : 1 }}>
+              <Avatar id={u.avatarId} color={u.color} size="sm"
+                className={u.id === myUser.id ? 'ring-2 ring-[#e07a8f] ring-offset-1 ring-offset-[#fdf8f4]' : ''} />
+            </div>
           ))}
         </div>
+
+        {/* Code */}
+        <span className="font-pixel text-xs text-[#c09aaa] tracking-widest hidden sm:block">{code}</span>
       </div>
 
-      {/* Left Panel: Drawing Studio */}
-      <div className="w-full md:w-[380px] h-1/2 md:h-full shrink-0 flex flex-col p-4 pt-20 md:pt-4 z-30 relative border-b md:border-b-0 md:border-r border-border/50 bg-white/40">
-        <h2 className="font-display text-xl mb-4 text-foreground/80 pl-2">Drawing Studio</h2>
+      {/* LEFT: Drawing Studio */}
+      <div className="hidden md:flex w-[340px] shrink-0 flex-col pt-16 pb-4 px-4 gap-4 relative z-30"
+        style={{ background: '#fdf4f6', borderRight: '3px solid #e8d0d8' }}>
+        <p className="font-display text-sm text-[#c09aaa]">Drawing Studio</p>
         <DrawingStudio onSave={handleSaveFlower} isSaving={createFlower.isPending} />
-        
-        <div className="mt-6 flex-1 flex flex-col min-h-0">
-          <h3 className="font-bold text-sm text-muted-foreground uppercase tracking-wider mb-2 pl-2">Your Flowers</h3>
-          <div className="flex-1 overflow-y-auto cute-scrollbar p-2 bg-white/50 rounded-2xl border-2 border-border/30 shadow-inner flex flex-wrap content-start gap-2">
+
+        <div className="flex-1 flex flex-col min-h-0 mt-2">
+          <p className="font-display text-xs text-[#c09aaa] mb-2">Your Flower Library</p>
+          <div className="flex-1 min-h-0 overflow-y-auto cute-scrollbar p-2 flex flex-wrap content-start gap-2"
+            style={{ background: '#fdf8fa', border: '2px solid #e8d0d8', borderRadius: '4px' }}>
             {libraryFlowers.length === 0 ? (
-              <p className="w-full text-center text-sm text-muted-foreground py-8">
-                Draw a flower to start planting!
-              </p>
+              <div className="w-full flex flex-col items-center justify-center py-8 gap-2">
+                <motion.div animate={{ y: [0,-4,0] }} transition={{ duration: 2, repeat: Infinity }}>
+                  <svg width="36" height="36" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" style={{ imageRendering: 'pixelated' }}>
+                    <rect x="26" y="20" width="4" height="22" fill="#8ec48a" />
+                    <ellipse cx="28" cy="22" rx="7" ry="7" fill="#e8d0d8" />
+                    <circle cx="28" cy="25" r="3" fill="#fdf8fa" />
+                  </svg>
+                </motion.div>
+                <p className="font-display text-[10px] text-[#c09aaa] text-center">Draw a flower to plant it!</p>
+              </div>
             ) : (
               libraryFlowers.map(f => (
-                <DraggableFlower 
-                  key={f.id} 
-                  flower={f} 
-                  containerRef={gardenRef} 
-                  onDrop={handleDropFlower} 
-                />
+                <DraggableFlower key={f.id} flower={f} containerRef={gardenRef} onDrop={handleDropFlower} />
               ))
             )}
           </div>
         </div>
       </div>
 
-      {/* Center Panel: The Garden */}
-      <div 
-        className="flex-1 relative overflow-hidden bg-[#eaf2e3]"
-        style={{ filter: healthFilter, transition: 'filter 1s ease-in-out' }}
-      >
-        {/* Grass texture background */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-30 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#d4e4c8] to-transparent" />
-        
-        {/* The droppable area */}
-        <div ref={gardenRef} className="absolute inset-4 rounded-3xl z-10">
+      {/* CENTER: The Garden */}
+      <div className="flex-1 relative overflow-hidden pt-12 md:pt-0">
+        <PixelGardenBg health={state.garden.healthScore} />
+        <div ref={gardenRef} className="absolute inset-0 z-10" style={{ top: '40%' }}>
           {gardenFlowers.map(f => (
-            <DraggableFlower 
-              key={f.id} 
-              flower={f} 
-              containerRef={gardenRef} 
+            <DraggableFlower
+              key={f.id}
+              flower={f}
+              containerRef={gardenRef}
               onDrop={handleDropFlower}
-              isDraggable={f.drawnBy === myUser.id} // Only drag own flowers once planted
+              isDraggable={f.drawnBy === myUser.id}
             />
           ))}
-          
           {gardenFlowers.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <p className="text-primary/40 font-display text-3xl md:text-5xl rotate-[-5deg]">
-                Drag flowers here...
-              </p>
+              <motion.p
+                animate={{ opacity: [0.4, 0.7, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="font-display text-white text-shadow text-lg drop-shadow-md"
+              >
+                drag flowers here...
+              </motion.p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Mailbox Component */}
-      <Mailbox 
-        currentUser={myUser} 
-        users={state.users} 
-        letters={state.letters} 
+      {/* Mobile: Drawing panel bottom drawer toggle (simplified) */}
+      <div className="md:hidden absolute bottom-20 left-4 z-30">
+        <details className="group">
+          <summary
+            className="pixel-btn list-none cursor-pointer px-4 py-2 font-display text-xs bg-[#fdf4f6] text-[#7a2e43]"
+            style={{ borderRadius: '4px' }}
+          >
+            Drawing Studio
+          </summary>
+          <div className="absolute bottom-full mb-2 left-0 w-80 pixel-panel bg-[#fdf4f6] p-4 max-h-[60vh] overflow-y-auto cute-scrollbar">
+            <DrawingStudio onSave={handleSaveFlower} isSaving={createFlower.isPending} />
+          </div>
+        </details>
+      </div>
+
+      {/* Mailbox */}
+      <Mailbox
+        currentUser={myUser}
+        users={state.users}
+        letters={state.letters}
         onSend={handleSendLetter}
         isSending={createLetter.isPending}
       />
