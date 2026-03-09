@@ -108,23 +108,33 @@ export function Garden() {
       <div className="h-screen w-full flex flex-col items-center justify-center gap-4 bg-background p-4 text-center">
         <AlertCircle className="w-12 h-12 text-destructive" />
         <h2 className="font-display text-xl text-foreground">Garden not found</h2>
-        <p className="text-sm text-muted-foreground">This garden might not exist.</p>
-        <button onClick={() => setLocation("/")}
+        <p className="text-sm text-muted-foreground">This garden might not exist anymore.</p>
+        <button
+          onClick={() => { localStorage.removeItem("garden_session"); setLocation("/"); }}
           className="pixel-btn px-6 py-2.5 bg-[#e07a8f] text-white font-display text-sm mt-2"
           style={{ borderRadius: '4px' }}>
-          Go Home
+          Start Fresh
         </button>
       </div>
     );
   }
 
   const myUser = state.users.find(u => u.id === currentUser.id);
-  if (!myUser && !isLoading) {
-    localStorage.removeItem("garden_session");
-    setLocation(`/join/${code}`);
-    return null;
-  }
-  if (!myUser) return null;
+  // Don't clear the session on user-not-found — the data might be briefly stale.
+  // The 3s poll will bring in fresh data. Just show loading until the user appears.
+  if (!myUser) return (
+    <div className="h-screen w-full flex flex-col items-center justify-center gap-4"
+      style={{ background: 'linear-gradient(180deg, #c8e8f8 0%, #c4ddc0 60%, #6daa62 100%)' }}>
+      <motion.div animate={{ y: [0,-8,0] }} transition={{ duration: 1.2, repeat: Infinity }}>
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" style={{ imageRendering: 'pixelated' }}>
+          <rect x="26" y="16" width="4" height="24" fill="#6daa62" />
+          <ellipse cx="28" cy="18" rx="8" ry="8" fill="#f9bcd8" />
+          <circle cx="28" cy="21" r="3.5" fill="#ffd44a" />
+        </svg>
+      </motion.div>
+      <p className="font-display text-[#7a2e43] text-sm">finding your spot...</p>
+    </div>
+  );
 
   const handleSaveFlower = async (base64: string) => {
     if (!code) return;
