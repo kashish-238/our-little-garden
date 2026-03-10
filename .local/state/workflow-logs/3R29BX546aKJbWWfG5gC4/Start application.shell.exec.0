@@ -1,0 +1,168 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+[1G[0K8:35:16 PM [express] serving on port 5000
+
+A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+8:35:19 PM [express] POST /api/gardens 201 in 62ms :: {"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:35:19.901Z","createdAt":"2026-03-09T20:35:19.901Z"}
+8:36:35 PM [express] POST /api/gardens/CRCKRH/users 201 in 23ms :: {"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}
+8:36:35 PM [express] GET /api/gardens/CRCKRH/state 200 in 7ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:36:38 PM [express] GET /api/gardens/CRCKRH/state 304 in 5ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:36:42 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:36:45 PM [express] GET /api/gardens/CRCKRH/state 304 in 4ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:36:48 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:36:51 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:36:54 PM [express] GET /api/gardens/CRCKRH/state 304 in 5ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:36:57 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m8:36:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/DrawingStudio.tsx[22m
+8:37:00 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:37:03 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m8:37:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/DrawingStudio.tsx[22m [33m(x2)[39m
+8:37:06 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:37:09 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m8:37:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/DrawingStudio.tsx[22m [33m(x3)[39m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m8:37:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/Garden.tsx, /src/index.css[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m8:37:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/Landing.tsx, /src/index.css[22m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m8:38:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/Mailbox.tsx[22m
+8:39:21 PM [express] GET /api/gardens/CRCKRH/state 304 in 14ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:39:24 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}
+8:39:27 PM [express] GET /api/gardens/CRCKRH/state 304 in 3ms :: {"garden":{"code":"CRCKRH","name":"Our Little Garden","healthScore":100,"lastActivity":"2026-03-09T20:36:35.811Z","createdAt":"2026-03-09T20:35:19.901Z"},"users":[{"id":5,"gardenCode":"CRCKRH","name":"Kiki","avatarId":"cat","color":"blush","role":"friend","joinedAt":"2026-03-09T20:36:35.807Z"}],"flowers":[],"letters":[]}

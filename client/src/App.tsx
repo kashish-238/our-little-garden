@@ -25,7 +25,17 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+
+        <div className="min-h-screen flex flex-col">
+          <div className="flex-1">
+            <Router />
+          </div>
+
+          <footer className="text-center text-xs opacity-60 py-4 font-mono">
+            🌱 Our Little Garden • Created by Sahil Patel • Seneca Polytechnic
+          </footer>
+        </div>
+
       </TooltipProvider>
     </QueryClientProvider>
   );
